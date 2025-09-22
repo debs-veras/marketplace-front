@@ -1,19 +1,11 @@
-import { useEffect } from 'react';
-import useToastLoading from './hooks/useToastLoading';
+import { Suspense } from 'react';
+import Router from './router';
+import Loading from './components/Loading';
 import { ToastContainer } from 'react-toastify';
 
-export default function App() {
-  const toastLoading = useToastLoading();
-
-  useEffect(() => {
-    toastLoading({
-      mensagem: 'Login realizado com sucesso',
-      tipo: 'success',
-    });
-  }, []);
-
+function App() {
   return (
-    <>
+    <Suspense fallback={<Loading />}>
       <ToastContainer
         position="top-right"
         autoClose={5000}
@@ -25,9 +17,9 @@ export default function App() {
         closeButton={true}
         style={{ width: 'fit-content' }}
       />
-      <div className="bg-gray-100 h-screen">
-        <div className="font-black">Olá Mundo!!</div>
-      </div>
-    </>
+      <Router />
+    </Suspense>
   );
 }
+
+export default App;
