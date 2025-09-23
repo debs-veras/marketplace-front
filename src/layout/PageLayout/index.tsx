@@ -47,7 +47,7 @@ export default function PageLayout() {
           >
             <img
               src={Logo}
-              alt="Logo Escola de Música"
+              alt="Logo"
               className={clsx(
                 'object-contain transition-all duration-300',
                 menuAberto ? 'w-20' : 'w-8'
@@ -56,13 +56,13 @@ export default function PageLayout() {
 
             <button
               onClick={() => setMenuAberto(!menuAberto)}
-              className="btn btn-ghost btn-square"
+              className="btn btn-ghost btn-sm btn-circle"
               id="botaoMenu"
             >
               {menuAberto ? (
-                <BiChevronLeft className="h-5 w-5 text-gray-600" />
+                <BiChevronLeft className="h-6 w-6 text-gray-600" />
               ) : (
-                <BiChevronRight className="h-5 w-5 text-gray-600" />
+                <BiChevronRight className="h-6 w-6 text-gray-600" />
               )}
             </button>
           </div>
