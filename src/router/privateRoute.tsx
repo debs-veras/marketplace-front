@@ -14,8 +14,7 @@ export default function PrivateRoute({
   const { user, isAuthenticated } = useAuth();
 
   if (!isAuthenticated) return <Navigate to="/login/user" replace />;
-  if (!user || !allowedRoles.includes(user.role))
-    return <Navigate to="/403" replace />;
+  if (!user || !allowedRoles.includes(user.role)) return <Navigate to="/403" replace />;
 
   return children;
 }

@@ -4,24 +4,23 @@ import { BiUser, BiLock, BiHappy, BiShow, BiHide } from 'react-icons/bi';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/authContext';
 import LogoCompleta from '../../assets/logo_completa.png';
-
-type LoginForm = {
-  username: string;
-  password: string;
-};
+import useToastLoading from '../../hooks/useToastLoading';
+import { userLoginRequest } from '../../services/authRequest';
+import { LoginAuth } from '../../types/auth';
 
 export default function Login() {
   const { type } = useParams<{ type?: string }>();
   const navigate = useNavigate();
   const { login } = useAuth();
+  const toastLoading = useToastLoading();
   const role = type === 'admin' ? 'admin' : 'user';
   const [showPassword, setShowPassword] = useState(false);
-
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors, isSubmitting },
-  } = useForm<LoginForm>();
+  } = useForm<LoginAuth>();
 
   const validRoles = ['admin', 'user'];
 
@@ -50,20 +49,40 @@ export default function Login() {
       headerSubtitle: 'Tenha um bom dia',
       loginSubtitle: 'Entre na sua conta',
       switchLink: { path: '/login/admin', label: 'Login Admin' },
-      redirectPath: '/user/dashboard',
+      redirectPath: '/',
     },
   };
 
   const currentConfig = config[role];
 
-  const onSubmit = async (data: LoginForm) => {
+  const onSubmit = async (data: LoginAuth) => {
+    toastLoading({ mensagem: 'Verificando usuário' });
+
+    const usuarioLogin: LoginAuth = data;
+    const response = await userLoginRequest(usuarioLogin);
+
     await new Promise((resolve) => setTimeout(resolve, 1500));
-    login({ username: data.username, role });
-    navigate(currentConfig.redirectPath);
+
+    if (response.success) {
+      localStorage.setItem('@token', response.data.accessToken);
+      toastLoading({
+        mensagem: 'Login realizado com sucesso',
+        tipo: 'success',
+        onClose: () => navigate('/'),
+      });
+      login({ username: data.email, role });
+      navigate(currentConfig.redirectPath);
+    } else {
+      toastLoading({
+        mensagem: response.data,
+        tipo: 'error',
+      });
+    }
+    reset();
   };
 
   useEffect(() => {
-    if (!type || !validRoles.includes(type)) navigate('/404');
+    if (!type || !validRoles.includes(type)) navigate('/403');
   }, [type, navigate]);
 
   return (
@@ -142,21 +161,22 @@ export default function Login() {
                   </div>
                   <input
                     type="text"
-                    {...register('username', {
+                    {...register('email', {
                       required: 'Usuário é obrigatório',
                     })}
+                    disabled={isSubmitting}
                     className={`w-full pl-10 pr-4 py-2 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300
                       ${
-                        errors.username
+                        errors.email
                           ? 'border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-100'
                           : `border-gray-200 ${currentConfig.inputFocus}`
                       }`}
                     placeholder="Digite seu usuário"
                   />
                 </div>
-                {errors.username && (
+                {errors.email && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.username.message}
+                    {errors.email.message}
                   </p>
                 )}
               </div>
@@ -175,6 +195,7 @@ export default function Login() {
                     {...register('password', {
                       required: 'Senha é obrigatória',
                     })}
+                    disabled={isSubmitting}
                     className={`w-full pl-10 pr-10 py-2 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300
                       ${
                         errors.password

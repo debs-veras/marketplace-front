@@ -1,8 +1,9 @@
 import React, { lazy } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import routesPaginas from './paginas';
 import { AuthProvider } from '../context/authContext';
 import ForbiddenPage from '../pages/ForbiddenPage';
+import userRoutes from './userRoutes';
+import HomePage from '../pages/Home';
 
 const Login = lazy(() => import('../pages/Login'));
 const NotFound = lazy(() => import('../pages/NotFoundPage'));
@@ -18,7 +19,11 @@ function Router(): React.JSX.Element {
       path: '/403',
       element: <ForbiddenPage />,
     },
-    routesPaginas,
+    {
+      path: '/',
+      element: <HomePage />,
+    },
+    userRoutes,
   ]);
 
   return (
