@@ -1,19 +1,12 @@
-import Loading from '../components/Loading';
 import PageLayout from '../layout/PageLayout';
-import HomePage from '../pages/Home';
 import NotFoundPage from '../pages/NotFoundPage';
+import userRoutes from './userRoutes';
 
 const routesPaginas = {
   path: '/',
   element: <PageLayout />,
   errorElement: <NotFoundPage />,
-  children: [
-    {
-      path: '/',
-      element: <HomePage />,
-      errorElement: <Loading />,
-    },
-  ],
+  children: [userRoutes],
 };
 
 export default routesPaginas;

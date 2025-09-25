@@ -15,13 +15,14 @@ export default function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
   const role = type === 'admin' ? 'admin' : 'user';
-  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [showPassword, setShowPassword] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<LoginForm>();
-  // Valid roles
+
   const validRoles = ['admin', 'user'];
 
   const config = {
@@ -30,8 +31,8 @@ export default function Login() {
       gradientVia: 'via-indigo-600',
       gradientTo: 'to-indigo-700',
       accent: 'indigo',
-      headerFrom: 'from-indigo-100',
-      headerTo: 'to-indigo-200',
+      inputFocus: 'focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100',
+      buttonFocus: 'focus:ring-indigo-200',
       headerTitle: 'Bem-vindo Admin!',
       headerSubtitle: 'Painel de Controle',
       loginSubtitle: 'Entre na conta administrativa',
@@ -43,8 +44,8 @@ export default function Login() {
       gradientVia: 'via-blue-600',
       gradientTo: 'to-blue-700',
       accent: 'blue',
-      headerFrom: 'from-blue-100',
-      headerTo: 'to-blue-200',
+      inputFocus: 'focus:border-blue-500 focus:ring-4 focus:ring-blue-100',
+      buttonFocus: 'focus:ring-blue-200',
       headerTitle: 'Olá!',
       headerSubtitle: 'Tenha um bom dia',
       loginSubtitle: 'Entre na sua conta',
@@ -54,21 +55,21 @@ export default function Login() {
   };
 
   const currentConfig = config[role];
+
   const onSubmit = async (data: LoginForm) => {
     await new Promise((resolve) => setTimeout(resolve, 1500));
     login({ username: data.username, role });
     navigate(currentConfig.redirectPath);
   };
-  const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   useEffect(() => {
     if (!type || !validRoles.includes(type)) navigate('/404');
-  }, []);
+  }, [type, navigate]);
 
   return (
-    <div className={`h-screen flex items-center justify-center p-3 sm:p-6`}>
+    <div className="h-screen flex items-center justify-center p-3 sm:p-6">
       <div className="max-w-6xl w-full flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-2xl bg-white mx-2 sm:mx-4">
-        {/* Lado Esquerdo - Ilustração */}
+        {/* Lado Esquerdo */}
         <div
           className={`lg:w-2/5 bg-gradient-to-br ${currentConfig.gradientFrom} ${currentConfig.gradientVia} ${currentConfig.gradientTo} p-6 sm:p-8 md:p-12 flex flex-col justify-center items-center text-white relative overflow-hidden`}
         >
@@ -111,7 +112,7 @@ export default function Login() {
           </div>
         </div>
 
-        {/* Lado Direito - Formulário */}
+        {/* Lado Direito */}
         <div className="lg:w-3/5 p-6 sm:p-8 md:p-12 flex flex-col justify-center">
           <div className="max-w-md w-full mx-auto">
             <div className="flex items-center flex-col gap-2 mb-6 sm:mb-10">
@@ -130,16 +131,14 @@ export default function Login() {
               onSubmit={handleSubmit(onSubmit)}
               className="space-y-4 sm:space-y-6"
             >
-              {/* Campo Usuário - Focus Corrigido */}
+              {/* Usuário */}
               <div className="space-y-1">
                 <label className="block text-sm font-semibold text-gray-700">
                   Usuário:
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <BiUser
-                      className={`h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-${currentConfig.accent}-500 transition-colors`}
-                    />
+                    <BiUser className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-colors group-focus-within:text-gray-600" />
                   </div>
                   <input
                     type="text"
@@ -150,7 +149,7 @@ export default function Login() {
                       ${
                         errors.username
                           ? 'border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-100'
-                          : `border-gray-200 focus:border-${currentConfig.accent}-500 focus:ring-4 focus:ring-${currentConfig.accent}-100`
+                          : `border-gray-200 ${currentConfig.inputFocus}`
                       }`}
                     placeholder="Digite seu usuário"
                   />
@@ -162,16 +161,14 @@ export default function Login() {
                 )}
               </div>
 
-              {/* Campo Senha - Focus Corrigido */}
+              {/* Senha */}
               <div className="space-y-1">
                 <label className="block text-sm font-semibold text-gray-700">
                   Senha:
                 </label>
                 <div className="relative group">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <BiLock
-                      className={`h-4 w-4 sm:h-5 sm:w-5 text-gray-400 group-focus-within:text-${currentConfig.accent}-500 transition-colors`}
-                    />
+                    <BiLock className="h-4 w-4 sm:h-5 sm:w-5 text-gray-400 transition-colors group-focus-within:text-gray-600" />
                   </div>
                   <input
                     type={showPassword ? 'text' : 'password'}
@@ -182,13 +179,13 @@ export default function Login() {
                       ${
                         errors.password
                           ? 'border-red-300 focus:border-red-500 focus:ring-4 focus:ring-red-100'
-                          : `border-gray-200 focus:border-${currentConfig.accent}-500 focus:ring-4 focus:ring-${currentConfig.accent}-100`
+                          : `border-gray-200 ${currentConfig.inputFocus}`
                       }`}
                     placeholder="Digite sua senha"
                   />
                   <button
                     type="button"
-                    onClick={togglePasswordVisibility}
+                    onClick={() => setShowPassword(!showPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 p-1.5 text-gray-400 hover:text-gray-600 transition-all duration-200 hover:bg-gray-100 rounded-lg"
                   >
                     {showPassword ? (
@@ -205,11 +202,11 @@ export default function Login() {
                 )}
               </div>
 
-              {/* Botão de Login */}
+              {/* Botão */}
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className={`w-full bg-gradient-to-r ${currentConfig.gradientFrom} ${currentConfig.gradientTo} text-white py-2 sm:py-3 px-6 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-${currentConfig.accent}-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
+                className={`w-full bg-gradient-to-r ${currentConfig.gradientFrom} ${currentConfig.gradientTo} text-white py-2 sm:py-3 px-6 rounded-xl font-semibold text-base sm:text-lg shadow-lg hover:shadow-xl transform hover:scale-[1.02] transition-all duration-300 focus:outline-none ${currentConfig.buttonFocus} disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none`}
               >
                 {isSubmitting ? (
                   <div className="flex items-center justify-center space-x-2">
@@ -221,36 +218,32 @@ export default function Login() {
                 )}
               </button>
 
-              {/* Divisor */}
-              <div className="relative flex items-center justify-center">
-                <div className="absolute inset-0 flex items-center">
-                  <div className="w-full border-t border-gray-200"></div>
-                </div>
-                <div className="relative bg-white px-3 text-xs sm:text-sm text-gray-500">
-                  Ou
-                </div>
-              </div>
+              {role === 'user' && (
+                <>
+                  {/* Divisor */}
+                  <div className="relative flex items-center justify-center">
+                    <div className="absolute inset-0 flex items-center">
+                      <div className="w-full border-t border-gray-200"></div>
+                    </div>
+                    <div className="relative bg-white px-3 text-xs sm:text-sm text-gray-500">
+                      Ou
+                    </div>
+                  </div>
 
-              {/* Links */}
-              <div className="text-center space-y-2">
-                <p className="text-gray-600 text-sm sm:text-base">
-                  Não tem uma conta?{' '}
-                  <Link
-                    to="/register"
-                    className={`text-${currentConfig.accent}-600 hover:text-${currentConfig.accent}-700 font-semibold hover:underline transition-colors`}
-                  >
-                    Criar conta
-                  </Link>
-                </p>
-                <p className="text-gray-600 text-sm sm:text-base">
-                  <Link
-                    to={currentConfig.switchLink.path}
-                    className={`text-${currentConfig.accent}-600 hover:text-${currentConfig.accent}-700 hover:underline transition-colors`}
-                  >
-                    {currentConfig.switchLink.label}
-                  </Link>
-                </p>
-              </div>
+                  {/* Link de registro - só para user */}
+                  <div className="text-center space-y-2">
+                    <p className="text-gray-600 text-sm sm:text-base">
+                      Não tem uma conta?{' '}
+                      <Link
+                        to="/register"
+                        className={`text-${currentConfig.accent}-600 hover:text-${currentConfig.accent}-700 font-semibold hover:underline transition-colors`}
+                      >
+                        Criar conta
+                      </Link>
+                    </p>
+                  </div>
+                </>
+              )}
             </form>
           </div>
         </div>
