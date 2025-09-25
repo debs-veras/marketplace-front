@@ -1,6 +1,7 @@
 import React, { lazy } from 'react';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import routesPaginas from './paginas';
+import { AuthProvider } from '../context/authContext';
 
 const Login = lazy(() => import('../pages/Login'));
 const NotFound = lazy(() => import('../pages/NotFoundPage'));
@@ -8,14 +9,18 @@ const NotFound = lazy(() => import('../pages/NotFoundPage'));
 function Router(): React.JSX.Element {
   const router = createBrowserRouter([
     {
-      path: '/login',
+      path: '/login/:type',
       element: <Login />,
       errorElement: <NotFound />,
     },
     routesPaginas,
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />;
+    </AuthProvider>
+  );
 }
 
 export default Router;
