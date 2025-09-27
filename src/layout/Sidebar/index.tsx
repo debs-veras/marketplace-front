@@ -19,14 +19,16 @@ import { useEffect, useState } from 'react';
 import ScrollArea from '../../components/ScrollArea';
 
 export default function Sidebar() {
-  const [menuAberto, setMenuAberto] = useState<boolean>(() => {
-    const v = localStorage.getItem('menuAberto');
-    return v == null ? true : v === 'true';
-  });
-
-  const [tema, setTema] = useState<'light' | 'dark'>('light');
   const navigate = useNavigate();
   const location = useLocation();
+  const [menuOpen, setMenuOpen] = useState<boolean>(() => {
+    const v = localStorage.getItem('menuOpen');
+    return v == null ? true : v === 'true';
+  });
+  const [thema, setThema] = useState<'light' | 'dark'>(() => {
+    const salvo = localStorage.getItem('tema');
+    return salvo === 'dark' ? 'dark' : 'light';
+  });
 
   const menuItems = [
     { icon: <BiHome className="w-6 h-6" />, label: 'Dashboard', path: '/' },
@@ -52,49 +54,54 @@ export default function Sidebar() {
     },
   ];
 
-  useEffect(() => {
-    localStorage.setItem('menuAberto', String(menuAberto));
-  }, [menuAberto]);
-
   function toggleTema() {
-    const novoTema = tema === 'light' ? 'dark' : 'light';
-    setTema(novoTema);
-    document.documentElement.setAttribute('data-theme', novoTema); // DaisyUI compatível
+    const newThema = thema === 'light' ? 'dark' : 'light';
+    setThema(newThema);
+    document.documentElement.setAttribute('data-theme', newThema);
   }
 
   function handleLogout() {
     navigate('/login');
   }
 
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', thema);
+    localStorage.setItem('tema', thema);
+  }, [thema]);
+
+  useEffect(() => {
+    localStorage.setItem('menuOpen', String(menuOpen));
+  }, [menuOpen]);
+
   return (
     <aside
       className={clsx(
         'select-none shadow-md transition-all duration-300 h-full bg-base-100 flex flex-col',
-        menuAberto ? 'w-[15vw] min-w-[220px]' : 'w-20'
+        menuOpen ? 'w-[15vw] min-w-[220px]' : 'w-20'
       )}
     >
       {/* Header */}
       <div
         className={clsx(
           'flex items-center transition-all duration-300 mt-5 rounded-2xl px-3 py-2 flex-shrink-0',
-          menuAberto ? 'justify-between' : 'justify-center flex-col gap-3'
+          menuOpen ? 'justify-between' : 'justify-center flex-col gap-3'
         )}
       >
         <img
-          src={menuAberto ? LogoCompleta : LogoSimples}
+          src={menuOpen ? LogoCompleta : LogoSimples}
           alt="Logo"
           className={clsx(
             'object-contain transition-all duration-300',
-            menuAberto ? 'w-32' : 'w-12'
+            menuOpen ? 'w-32' : 'w-12'
           )}
         />
 
         <button
-          onClick={() => setMenuAberto(!menuAberto)}
+          onClick={() => setMenuOpen(!menuOpen)}
           className="btn btn-ghost btn-circle btn-sm hover:bg-primary/15 transition-colors flex-shrink-0"
           id="botaoMenu"
         >
-          {menuAberto ? (
+          {menuOpen ? (
             <BiChevronLeft className="w-6 h-6  text-primary" />
           ) : (
             <BiChevronRight className="w-6 h-6 text-primary" />
@@ -119,7 +126,7 @@ export default function Sidebar() {
                           className={clsx(
                             'group relative flex items-center transition-all duration-200 rounded-lg w-full',
                             'hover:bg-primary/15',
-                            menuAberto
+                            menuOpen
                               ? 'px-3 py-2 gap-3 justify-start'
                               : 'p-2 justify-center',
                             isActive &&
@@ -139,7 +146,7 @@ export default function Sidebar() {
                           <span
                             className={clsx(
                               'font-medium text-sm transition-all duration-200 whitespace-nowrap',
-                              menuAberto
+                              menuOpen
                                 ? 'opacity-100 max-w-[200px] block'
                                 : 'opacity-0 max-w-0 overflow-hidden'
                             )}
@@ -150,7 +157,7 @@ export default function Sidebar() {
                       </div>
                     </Tooltip.Trigger>
 
-                    {!menuAberto && (
+                    {!menuOpen && (
                       <Tooltip.Portal>
                         <Tooltip.Content
                           side="right"
@@ -176,21 +183,21 @@ export default function Sidebar() {
         <div
           className={clsx(
             'flex items-center transition-all duration-200',
-            menuAberto ? 'justify-between' : 'justify-center flex-col gap-3'
+            menuOpen ? 'justify-between' : 'justify-center flex-col gap-3'
           )}
         >
           {/* Avatar + Email */}
           <div
             className={clsx(
               'flex items-center gap-2 overflow-hidden',
-              !menuAberto && 'justify-center'
+              !menuOpen && 'justify-center'
             )}
           >
             <div className="w-9 h-9 bg-primary/10 text-primary rounded-full flex items-center justify-center font-semibold">
               A
             </div>
 
-            {menuAberto && (
+            {menuOpen && (
               <div className="min-w-0 flex-1">
                 <p className="text-sm text-base-content/70 truncate">
                   admin@exemplo.com
@@ -200,13 +207,13 @@ export default function Sidebar() {
           </div>
 
           {/* Botões (Tema + Logout) */}
-          <div className={clsx('flex items-center', !menuAberto && 'flex-col')}>
+          <div className={clsx('flex items-center', !menuOpen && 'flex-col')}>
             <button
               onClick={toggleTema}
               className="btn btn-ghost btn-circle btn-sm hover:bg-base-300"
               title="Alterar tema"
             >
-              {tema === 'dark' ? (
+              {thema === 'dark' ? (
                 <BiSun className="w-5 h-5 text-warning" />
               ) : (
                 <BiMoon className="w-5 h-5 text-info" />

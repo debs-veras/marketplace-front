@@ -35,7 +35,6 @@ export default function Login() {
       headerTitle: 'Bem-vindo Admin!',
       headerSubtitle: 'Painel de Controle',
       loginSubtitle: 'Entre na conta administrativa',
-      switchLink: { path: '/login/user', label: 'Login Usuário' },
       redirectPath: '/admin/dashboard',
     },
     user: {
@@ -48,7 +47,6 @@ export default function Login() {
       headerTitle: 'Olá!',
       headerSubtitle: 'Tenha um bom dia',
       loginSubtitle: 'Entre na sua conta',
-      switchLink: { path: '/login/admin', label: 'Login Admin' },
       redirectPath: '/',
     },
   };
@@ -64,14 +62,23 @@ export default function Login() {
     await new Promise((resolve) => setTimeout(resolve, 1500));
 
     if (response.success) {
+      if (response.data.user.role.toLowerCase() !== role) {
+        toastLoading({
+          mensagem: 'Credenciais inválidas para este tipo de login',
+          tipo: 'error',
+        });
+        return;
+      }
       localStorage.setItem('@token', response.data.accessToken);
       toastLoading({
         mensagem: 'Login realizado com sucesso',
         tipo: 'success',
-        onClose: () => navigate('/'),
+        onClose: () => navigate(currentConfig.redirectPath),
       });
-      login({ username: data.email, role });
-      navigate(currentConfig.redirectPath);
+      login({
+        user: response.data.user,
+        role: response.data.user.role.toLowerCase(),
+      });
     } else {
       toastLoading({
         mensagem: response.data,

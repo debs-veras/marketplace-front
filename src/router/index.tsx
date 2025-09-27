@@ -4,6 +4,7 @@ import { AuthProvider } from '../context/authContext';
 import ForbiddenPage from '../pages/ForbiddenPage';
 import userRoutes from './userRoutes';
 import HomePage from '../pages/Home';
+import adminRoutes from './adminRoutes';
 
 const Login = lazy(() => import('../pages/Login'));
 const NotFound = lazy(() => import('../pages/NotFoundPage'));
@@ -24,6 +25,7 @@ function Router(): React.JSX.Element {
       element: <HomePage />,
     },
     userRoutes,
+    adminRoutes
   ]);
 
   return (
