@@ -5,6 +5,7 @@ import ForbiddenPage from '../pages/ForbiddenPage';
 import userRoutes from './userRoutes';
 import HomePage from '../pages/Home';
 import adminRoutes from './adminRoutes';
+import RegisterUser from '../pages/User/Register';
 
 const Login = lazy(() => import('../pages/Login'));
 const NotFound = lazy(() => import('../pages/NotFoundPage'));
@@ -24,8 +25,12 @@ function Router(): React.JSX.Element {
       path: '/',
       element: <HomePage />,
     },
+    {
+      path: '/register/user',
+      element: <RegisterUser />,
+    },
     userRoutes,
-    adminRoutes
+    adminRoutes,
   ]);
 
   return (

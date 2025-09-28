@@ -5,9 +5,9 @@ import {
   ReactNode,
   useEffect,
 } from 'react';
-import { UserAuth } from '../types/user';
+import { User } from '../types/user';
 
-type User = { user: UserAuth; role: 'user' | 'admin' };
+type User = { user: User; role: 'user' | 'admin' };
 
 type AuthContextType = {
   user: User | null;

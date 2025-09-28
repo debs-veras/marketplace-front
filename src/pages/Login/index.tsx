@@ -6,7 +6,7 @@ import { useAuth } from '../../context/authContext';
 import LogoCompleta from '../../assets/logo_completa.png';
 import useToastLoading from '../../hooks/useToastLoading';
 import { userLoginRequest } from '../../services/authRequest';
-import { LoginAuth } from '../../types/auth';
+import { LoginForm } from '../../types/auth';
 
 export default function Login() {
   const { type } = useParams<{ type?: string }>();
@@ -20,7 +20,7 @@ export default function Login() {
     handleSubmit,
     reset,
     formState: { errors, isSubmitting },
-  } = useForm<LoginAuth>();
+  } = useForm<LoginForm>();
 
   const validRoles = ['admin', 'user'];
 
@@ -53,13 +53,11 @@ export default function Login() {
 
   const currentConfig = config[role];
 
-  const onSubmit = async (data: LoginAuth) => {
+  const onSubmit = async (data: LoginForm) => {
     toastLoading({ mensagem: 'Verificando usuário' });
 
-    const usuarioLogin: LoginAuth = data;
+    const usuarioLogin: LoginForm = data;
     const response = await userLoginRequest(usuarioLogin);
-
-    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     if (response.success) {
       if (response.data.user.role.toLowerCase() !== role) {
@@ -70,14 +68,14 @@ export default function Login() {
         return;
       }
       localStorage.setItem('@token', response.data.accessToken);
+      login({
+        user: response.data.user,
+        role: response.data.user.role.toLowerCase(),
+      });
       toastLoading({
         mensagem: 'Login realizado com sucesso',
         tipo: 'success',
         onClose: () => navigate(currentConfig.redirectPath),
-      });
-      login({
-        user: response.data.user,
-        role: response.data.user.role.toLowerCase(),
       });
     } else {
       toastLoading({
@@ -263,7 +261,7 @@ export default function Login() {
                     <p className="text-gray-600 text-sm sm:text-base">
                       Não tem uma conta?{' '}
                       <Link
-                        to="/register"
+                        to="/register/user"
                         className={`text-${currentConfig.accent}-600 hover:text-${currentConfig.accent}-700 font-semibold hover:underline transition-colors`}
                       >
                         Criar conta

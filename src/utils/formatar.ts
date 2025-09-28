@@ -10,7 +10,7 @@ export const converterDecimal = (
     .toString();
 };
 
-export const formatarTelefone = (telefone: string): string => {
+export const formatarPhone = (telefone: string): string => {
   if (!telefone) return '';
   let r = telefone.replace(/\D/g, '');
   r = r.replace(/^0/, '');
@@ -40,8 +40,9 @@ export const formatarCpf = (
   return r;
 };
 
-export const removeMascara = (item: string): string => {
-  return item.replace(/[^0-9]/g, '');
+// Remove tudo que não for número
+export const removeMask = (item: string): string => {
+  return item.replace(/\D/g, '');
 };
 
 export const formatarDataHora = (
