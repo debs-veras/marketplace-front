@@ -1,5 +1,4 @@
 import PageLayout from '../layout/PageLayout';
-import HomePage from '../pages/Home';
 import NotFoundPage from '../pages/NotFoundPage';
 import PrivateRoute from './privateRoute';
 
@@ -9,10 +8,10 @@ const userRoutes = {
   errorElement: <NotFoundPage />,
   children: [
     {
-      path: 'dashboard',
+      path: 'minhas-compras',
       element: (
         <PrivateRoute allowedRoles={['user']}>
-          <HomePage />
+          <div>Meus Produtos</div>
         </PrivateRoute>
       ),
     },

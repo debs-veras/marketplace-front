@@ -15,6 +15,7 @@ export const putRequest = async (url: string, obj: any) => {
     const response = await axios.put(url, obj);
     return {
       data: response.data,
+      success: true,
       ...response.data,
     };
   } catch (error: any) {

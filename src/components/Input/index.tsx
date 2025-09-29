@@ -47,7 +47,6 @@ export function InputCpf({
     if (cleaned && /^(\d)\1+$/.test(cleaned)) return 'CPF inválido';
     return true;
   };
-
   // Formata CPF enquanto digita
   const formatCPF = (value: string = '') => {
     const numbers = removeMask(value);
@@ -83,7 +82,8 @@ export function InputCpf({
               onChange={(e) => field.onChange(formatCPF(e.target.value))}
               placeholder={placeholder}
               disabled={disabled}
-              className="w-full pl-10 pr-4 py-2 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              type="text"
+              className={`w-full ${icon ? 'pl-10' : 'pl-4'}  pr-4 py-2 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100`}
             />
           </div>
         )}
@@ -107,13 +107,15 @@ export function InputText(props: InputProps) {
   return (
     <div className="space-y-1">
       <label className="block text-sm font-semibold text-gray-700">
-        {propsInput.label}{' '}
+        {propsInput.label}
         {propsInput.required ? <span className="text-red-500">*</span> : null}
       </label>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {propsInput.icon && propsInput.icon}
-        </div>
+        {propsInput.icon && (
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            {propsInput.icon}
+          </div>
+        )}
         <input
           id={propsInput.name}
           disabled={propsInput.disabled}
@@ -126,7 +128,7 @@ export function InputText(props: InputProps) {
               ? propsInput.value
               : undefined
           }
-          className="w-full pl-10 pr-4 py-3 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className={`w-full ${propsInput.icon ? 'pl-10' : 'pl-4'} pr-4 py-3 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100`}
         />
       </div>
       {errorForField && (
@@ -193,7 +195,8 @@ export function InputPhone({
               value={formatPhone(field.value || '')}
               onChange={(e) => field.onChange(formatPhone(e.target.value))}
               placeholder={placeholder}
-              className="w-full pl-10 pr-4 py-3 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+              type="text"
+              className={`w-full ${icon ? 'pl-10' : 'pl-4'}  pr-4 py-3 sm:py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100`}
             />
           </div>
         )}
@@ -225,7 +228,7 @@ export function InputPassword({
   const toggleVisibility = () => setShowPassword((prev) => !prev);
 
   // Valor atual da senha
-  const passwordValue = watch && watch(name) || '';
+  const passwordValue = (watch && watch(name)) || '';
 
   // Requisitos da senha
   const requirements = [
@@ -245,7 +248,7 @@ export function InputPassword({
   const validatePassword = (v: string) => {
     if (validateStrength) {
       for (const req of requirements) {
-        if (!req.test(v)) 
+        if (!req.test(v))
           return `Senha inválida: falta ${req.label.toLowerCase()}`;
       }
     }
@@ -258,9 +261,11 @@ export function InputPassword({
         {label} {required ? <span className="text-red-500">*</span> : null}
       </label>
       <div className="relative group">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          {icon && icon}
-        </div>
+        {icon && (
+          <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+            {icon}
+          </div>
+        )}
         <input
           id={name}
           type={showPassword ? 'text' : 'password'}
@@ -270,7 +275,7 @@ export function InputPassword({
               ...validation,
               validate: validatePassword,
             }))}
-          className="w-full pl-10 pr-10 py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100"
+          className={`w-full ${icon ? 'pl-10' : 'pl-4'}  pr-10 py-3 text-base border-2 rounded-xl outline-none bg-gray-50/50 group-hover:bg-white transition-all duration-300 border-gray-200 focus:border-blue-500 focus:ring-4 focus:ring-blue-100`}
         />
         <button
           type="button"
@@ -313,6 +318,172 @@ export function InputPassword({
             );
           })}
         </ul>
+      )}
+    </div>
+  );
+}
+
+import { BiImageAdd } from 'react-icons/bi';
+
+type InputFileProps = {
+  name: string;
+  label: string;
+  control: Control<any>;
+  errors?: FieldErrors<any>;
+  required?: boolean;
+  disabled?: boolean;
+  accept?: string;
+  maxSizeMB?: number;
+  onFileChange?: (file: File | null) => void;
+};
+
+export function InputFile({
+  name,
+  label,
+  control,
+  errors,
+  required = true,
+  disabled = false,
+  accept = 'image/*',
+  maxSizeMB = 10,
+  onFileChange,
+}: InputFileProps) {
+  const [preview, setPreview] = useState<string | null>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const errorForField = errors?.[name] as FieldError | undefined;
+
+  const validateFile = (fileList?: FileList) => {
+    if (!fileList || fileList.length === 0) {
+      return required ? 'Imagem é obrigatória' : true;
+    }
+
+    const file = fileList[0];
+    if (!file.type.startsWith('image/')) {
+      return 'Arquivo precisa ser uma imagem';
+    }
+
+    const maxSizeBytes = maxSizeMB * 1024 * 1024;
+    if (file.size > maxSizeBytes) {
+      return `Imagem deve ter no máximo ${maxSizeMB}MB`;
+    }
+
+    return true;
+  };
+
+  const handleFileSelect = (file: File | null) => {
+    setSelectedFile(file);
+
+    if (file) {
+      const previewUrl = URL.createObjectURL(file);
+      setPreview(previewUrl);
+    } else {
+      setPreview(null);
+    }
+
+    // Chama callback externo se fornecido
+    if (onFileChange) {
+      onFileChange(file);
+    }
+  };
+
+  const handleRemoveFile = () => {
+    setSelectedFile(null);
+    setPreview(null);
+    if (onFileChange) onFileChange(null);
+  };
+
+  return (
+    <div className="space-y-3">
+      <label className="block text-sm font-semibold text-gray-900">
+        {label} {required ? <span className="text-red-500">*</span> : null}
+      </label>
+
+      <Controller
+        name={name}
+        control={control}
+        rules={{ validate: validateFile }}
+        render={({ field }) => (
+          <div className="space-y-3">
+            {/* Área de Upload */}
+            <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center hover:border-gray-400 transition-colors bg-white">
+              {preview ? (
+                <div className="space-y-4">
+                  <img
+                    src={preview}
+                    alt="Preview"
+                    className="mx-auto h-32 w-32 object-cover rounded-lg shadow-sm"
+                  />
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-gray-900">
+                      {selectedFile?.name}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1">
+                      {selectedFile &&
+                        (selectedFile.size / (1024 * 1024)).toFixed(2)}{' '}
+                      MB
+                    </p>
+                    <button
+                      type="button"
+                      onClick={handleRemoveFile}
+                      className="text-sm text-red-600 hover:text-red-800 mt-2 transition-colors"
+                    >
+                      Remover imagem
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <BiImageAdd className="mx-auto h-12 w-12 text-gray-400" />
+                  <div className="mt-4">
+                    <label className="cursor-pointer">
+                      <span className="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors">
+                        <svg
+                          className="w-4 h-4 mr-2"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M12 4v16m8-8H4"
+                          />
+                        </svg>
+                        Selecionar arquivo
+                      </span>
+                      <input
+                        id={name}
+                        type="file"
+                        accept={accept}
+                        disabled={disabled}
+                        className="sr-only"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0] || null;
+                          handleFileSelect(file);
+                          field.onChange(e.target.files);
+                        }}
+                      />
+                    </label>
+                    <p className="text-sm text-gray-500 mt-2">
+                      ou arraste e solte
+                    </p>
+                    <p className="text-xs text-gray-400 mt-1">
+                      PNG, JPG, GIF até {maxSizeMB}MB
+                    </p>
+                  </div>
+                </>
+              )}
+            </div>
+          </div>
+        )}
+      />
+
+      {errorForField && (
+        <p className="text-red-600 text-sm mt-1 flex items-center">
+          <span className="w-1.5 h-1.5 bg-red-600 rounded-full mr-2"></span>
+          {errorForField.message}
+        </p>
       )}
     </div>
   );

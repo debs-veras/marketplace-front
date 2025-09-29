@@ -8,10 +8,13 @@ type PrivateRouteProps = {
   allowedRoles: ('user' | 'admin')[];
 };
 
-export default function PrivateRoute({ children, allowedRoles }: PrivateRouteProps) {
+export default function PrivateRoute({
+  children,
+  allowedRoles,
+}: PrivateRouteProps) {
   const { user, isAuthenticated, loading } = useAuth();
   if (loading) return <Loading />;
-  if (!isAuthenticated || !user || !allowedRoles.includes(user.role)) 
+  if (!isAuthenticated || !user || !allowedRoles.includes(user.role))
     return <Navigate to="/403" replace />;
   return children;
 }

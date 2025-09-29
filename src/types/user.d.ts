@@ -1,8 +1,10 @@
+import { RoleValidate } from "./auth";
+
 export type User = {
   id: string;
   name: string;
   email: string;
-  role: string;
+  role: RoleValidate;
   phone: number;
   cpf: number;
 };

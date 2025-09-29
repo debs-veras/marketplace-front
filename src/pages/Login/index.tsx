@@ -11,7 +11,7 @@ import { LoginForm } from '../../types/auth';
 export default function Login() {
   const { type } = useParams<{ type?: string }>();
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const toastLoading = useToastLoading();
   const role = type === 'admin' ? 'admin' : 'user';
   const [showPassword, setShowPassword] = useState(false);
@@ -67,11 +67,11 @@ export default function Login() {
         });
         return;
       }
-      localStorage.setItem('@token', response.data.accessToken);
       login({
-        user: response.data.user,
+        ...response.data.user,
         role: response.data.user.role.toLowerCase(),
       });
+      localStorage.setItem('@token', response.data.accessToken);
       toastLoading({
         mensagem: 'Login realizado com sucesso',
         tipo: 'success',
@@ -87,8 +87,16 @@ export default function Login() {
   };
 
   useEffect(() => {
-    if (!type || !validRoles.includes(type)) navigate('/403');
-  }, [type, navigate]);
+    if (!type || !validRoles.includes(type)) {
+      navigate('/403');
+      return;
+    }
+
+    if (user && user.role.toLowerCase() === type)
+      navigate(currentConfig.redirectPath, { replace: true });
+
+    console.log('ehntriy')
+  }, [type, user, navigate, currentConfig.redirectPath]);
 
   return (
     <div className="h-screen flex items-center justify-center p-3 sm:p-6">

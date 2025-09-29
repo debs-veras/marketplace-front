@@ -1,5 +1,6 @@
 import PageLayout from '../layout/PageLayout';
-import HomePage from '../pages/Home';
+import ListingProducts from '../pages/Admin/Products/Listing';
+import RegisterProducts from '../pages/Admin/Products/Register';
 import NotFoundPage from '../pages/NotFoundPage';
 import PrivateRoute from './privateRoute';
 
@@ -14,7 +15,15 @@ const adminRoutes = {
   children: [
     {
       path: 'dashboard',
-      element: <HomePage />,
+      element: <div>Dasshboard</div>,
+    },
+    {
+      path: 'register/product/:idProduct?',
+      element: <RegisterProducts />,
+    },
+    {
+      path: 'listing/product',
+      element: <ListingProducts />,
     },
   ],
 };

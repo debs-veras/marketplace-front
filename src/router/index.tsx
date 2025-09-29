@@ -18,16 +18,20 @@ function Router(): React.JSX.Element {
       errorElement: <NotFound />,
     },
     {
-      path: '/403',
-      element: <ForbiddenPage />,
-    },
-    {
       path: '/',
       element: <HomePage />,
     },
     {
+      path: '/403',
+      element: <ForbiddenPage />,
+    },
+    {
       path: '/register/user',
       element: <RegisterUser />,
+    },
+    {
+      path: '*',
+      element: <NotFound />,
     },
     userRoutes,
     adminRoutes,

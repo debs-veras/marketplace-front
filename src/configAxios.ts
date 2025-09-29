@@ -7,8 +7,6 @@ const getAxios = (timeout: number = 600000) => {
     baseURL: API_URL,
     timeout: timeout,
     headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json',
       Authorization: `Bearer ${token}`,
     },
   });

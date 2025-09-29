@@ -7,8 +7,6 @@ import {
 } from 'react';
 import { User } from '../types/user';
 
-type User = { user: User; role: 'user' | 'admin' };
-
 type AuthContextType = {
   user: User | null;
   login: (userData: User) => void;

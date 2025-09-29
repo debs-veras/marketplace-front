@@ -55,7 +55,7 @@ export default function RegisterUser() {
     if (response.success) {
       localStorage.setItem('@token', response.data.accessToken);
       login({
-        user: response.data.user,
+        ...response.data.user,
         role: response.data.user.role.toLowerCase(),
       });
       toastLoading({

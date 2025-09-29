@@ -1,6 +1,6 @@
 type props = {
   fill?: string | null;
-  texto?: string;
+  text?: string;
 };
 
 export default function Loading(props: props) {
@@ -27,9 +27,9 @@ export default function Loading(props: props) {
             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
           ></path>
         </svg>
-        {props?.texto && (
+        {props?.text && (
           <span className="mt-6 mb-8 block text-md font-medium text-primary-900">
-            {props.texto}
+            {props.text}
           </span>
         )}
       </div>
