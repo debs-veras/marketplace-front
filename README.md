@@ -1,6 +1,5 @@
 # marketplace-front
 
-# Nome do Projeto
 Uma aplicação de e-commerce moderna desenvolvida em React com TypeScript, oferecendo uma experiência de compra intuitiva e responsiva.
 ## 🚀 Funcionalidades
 - **Catálogo de Produtos**: Visualize produtos em um layout de grade com opções de filtro e ordenação.
@@ -17,7 +16,7 @@ Uma aplicação de e-commerce moderna desenvolvida em React com TypeScript, ofer
 - [React Hook Form](https://react-hook-form.com/) para manipulação de formulários
 - [React Router](https://reactrouter.com/) para roteamento
 - [Axios](https://axios-http.com/) para requisições HTTP
-- [Outras dependências] (liste as principais, como react-icons, etc.)
+- [Outras dependências] react-icons
 
 ## 📋 Pré-requisitos
 
