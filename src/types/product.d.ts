@@ -8,13 +8,15 @@ export type ProductList = {
   id: string;
   name: string;
   description: string;
-  image: FileList;
+  imageUrl: string;
   price: number;
+  createdAt?: string;
+  updatedAt?: string;
 };
 
 export type ProductFilter = {
   page: number;
-  limit: number
+  limit: number;
   name?: string;
   description?: string;
   price?: number;

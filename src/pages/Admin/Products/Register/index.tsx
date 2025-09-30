@@ -41,7 +41,7 @@ export default function RegisterProducts() {
       }
     }
   };
-  
+
   const onSubmit = async (data: ProductForm) => {
     const formData = new FormData();
     formData.append('name', data.name);
@@ -141,7 +141,7 @@ export default function RegisterProducts() {
           <div className="flex justify-end gap-4 pt-6">
             <button
               type="button"
-              onClick={() => navigate('/listing/product')}
+              onClick={() => navigate(-1)}
               className="px-5 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors"
               disabled={isSubmitting}
             >

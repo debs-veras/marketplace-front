@@ -1,17 +1,18 @@
-import PageLayout from '../layout/PageLayout';
+import UserPageLayout from '../layout/UserPageLayout';
 import NotFoundPage from '../pages/NotFoundPage';
+import CartPage from '../pages/User/CartPage';
 import PrivateRoute from './privateRoute';
 
 const userRoutes = {
   path: '/user',
-  element: <PageLayout />,
+  element: <UserPageLayout />,
   errorElement: <NotFoundPage />,
   children: [
     {
       path: 'minhas-compras',
       element: (
         <PrivateRoute allowedRoles={['user']}>
-          <div>Meus Produtos</div>
+          <CartPage />
         </PrivateRoute>
       ),
     },

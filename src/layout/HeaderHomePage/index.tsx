@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import {
   BiCart,
-  BiSearch,
   BiUser,
   BiChevronDown,
   BiChart,
@@ -45,7 +44,6 @@ const menuConfig = {
 };
 
 export default function HeaderHomePage() {
-  const [search, setSearch] = useState('');
   const [isScrolled, setIsScrolled] = useState(false);
   const { user, logout } = useAuth();
 
@@ -54,11 +52,6 @@ export default function HeaderHomePage() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
-
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Buscando por:', search);
-  };
 
   // Obtém os itens do menu baseado no role do usuário
   const getMenuItems = (): MenuItem[] => {
@@ -91,41 +84,8 @@ export default function HeaderHomePage() {
             />
           </a>
 
-          {/* Busca (desktop) */}
-          <div className="hidden md:flex flex-1 max-w-2xl mx-6">
-            <form onSubmit={handleSearch} className="w-full">
-              <div className="flex items-center w-full rounded-full border-2 border-base-300 bg-base-100 shadow-sm focus-within:border-primary focus-within:shadow-md transition-all duration-200">
-                <input
-                  type="text"
-                  placeholder="Buscar produtos, marcas..."
-                  value={search}
-                  onChange={(e) => setSearch(e.target.value)}
-                  className="flex-1 h-11 px-5 rounded-l-full bg-transparent focus:outline-none text-sm placeholder:text-base-content/60"
-                />
-                <button
-                  type="submit"
-                  className="h-11 px-6 flex items-center justify-center rounded-r-full bg-gradient-to-r from-primary to-primary-focus text-white hover:shadow-lg transition-all hover:scale-105"
-                >
-                  <BiSearch size={20} />
-                </button>
-              </div>
-            </form>
-          </div>
-
           {/* Ações */}
           <div className="flex items-center gap-3">
-            {/* Carrinho - apenas para usuários comuns */}
-            {user?.role === 'user' && (
-              <div className="indicator">
-                <span className="indicator-item badge badge-primary badge-sm animate-pulse">
-                  2
-                </span>
-                <button className="btn btn-ghost btn-circle hover:bg-base-200 transition relative">
-                  <BiCart size={22} />
-                </button>
-              </div>
-            )}
-
             {/* Usuário */}
             {user ? (
               <div className="dropdown dropdown-end">
@@ -225,27 +185,6 @@ export default function HeaderHomePage() {
               </div>
             )}
           </div>
-        </div>
-
-        {/* Busca (mobile) */}
-        <div className="md:hidden pb-3">
-          <form onSubmit={handleSearch}>
-            <div className="flex items-center w-full rounded-full border-2 border-base-300 bg-base-100 shadow-sm focus-within:border-primary focus-within:shadow-md transition">
-              <input
-                type="text"
-                placeholder="Buscar produtos..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="flex-1 h-11 px-4 rounded-l-full bg-transparent focus:outline-none text-sm"
-              />
-              <button
-                type="submit"
-                className="h-11 px-5 flex items-center justify-center rounded-r-full bg-gradient-to-r from-primary to-primary-focus text-white hover:shadow-md transition"
-              >
-                <BiSearch size={20} />
-              </button>
-            </div>
-          </form>
         </div>
       </div>
 

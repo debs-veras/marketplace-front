@@ -353,19 +353,16 @@ export function InputFile({
   const errorForField = errors?.[name] as FieldError | undefined;
 
   const validateFile = (fileList?: FileList) => {
-    if (!fileList || fileList.length === 0) {
+    if (!fileList || fileList.length === 0)
       return required ? 'Imagem é obrigatória' : true;
-    }
 
     const file = fileList[0];
-    if (!file.type.startsWith('image/')) {
+    if (!file.type.startsWith('image/'))
       return 'Arquivo precisa ser uma imagem';
-    }
 
     const maxSizeBytes = maxSizeMB * 1024 * 1024;
-    if (file.size > maxSizeBytes) {
+    if (file.size > maxSizeBytes)
       return `Imagem deve ter no máximo ${maxSizeMB}MB`;
-    }
 
     return true;
   };
@@ -376,14 +373,9 @@ export function InputFile({
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       setPreview(previewUrl);
-    } else {
-      setPreview(null);
-    }
+    } else setPreview(null);
 
-    // Chama callback externo se fornecido
-    if (onFileChange) {
-      onFileChange(file);
-    }
+    if (onFileChange) onFileChange(file);
   };
 
   const handleRemoveFile = () => {

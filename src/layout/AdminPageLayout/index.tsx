@@ -3,7 +3,7 @@ import ScrollArea from '../../components/ScrollArea';
 import Sidebar from '../Sidebar';
 import { useState, useEffect } from 'react';
 
-export default function PageLayout() {
+export default function AdminPageLayout() {
   const location = useLocation();
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState('Dashboard');
@@ -13,10 +13,7 @@ export default function PageLayout() {
     const pageTitles = {
       '/dashboard': 'Dashboard',
       '/admin/register/product': 'Cadastro de Produtos',
-      '/vendas/relatorios': 'Relatórios de Vendas',
-      '/produtos': 'Produtos',
-      '/produtos/novo': 'Novo Produto',
-      '/produtos/editar': 'Editar Produto',
+      '/admin/listing/product': 'Listagem de Produtos',
     };
 
     setCurrentPage(pageTitles[location.pathname] || 'Dashboard');
@@ -27,10 +24,18 @@ export default function PageLayout() {
     const breadcrumbMap = {
       '/dashboard': [{ name: 'Dashboard', path: '/dashboard', active: true }],
       '/admin/register/product': [
-        { name: 'Admin', path: '/dashboard', active: true },
+        { name: 'Dashboard', path: '/dashboard', active: true },
         {
           name: 'Cadastro Produto',
           path: '/admin/register/product',
+          active: false,
+        },
+      ],
+      '/admin/listing/product': [
+        { name: 'Dashboard', path: '/dashboard', active: true },
+        {
+          name: 'Listagem de Produto',
+          path: '/admin/listing/product',
           active: false,
         },
       ],

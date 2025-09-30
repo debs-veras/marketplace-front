@@ -61,7 +61,7 @@ export default function Sidebar() {
   }
 
   function handleLogout() {
-    navigate('/');
+    navigate('login/admin');
     logout();
   }
 

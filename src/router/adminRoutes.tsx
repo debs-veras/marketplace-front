@@ -1,4 +1,4 @@
-import PageLayout from '../layout/PageLayout';
+import AdminPageLayout from '../layout/AdminPageLayout';
 import ListingProducts from '../pages/Admin/Products/Listing';
 import RegisterProducts from '../pages/Admin/Products/Register';
 import NotFoundPage from '../pages/NotFoundPage';
@@ -8,14 +8,14 @@ const adminRoutes = {
   path: '/admin',
   element: (
     <PrivateRoute allowedRoles={['admin']}>
-      <PageLayout />
+      <AdminPageLayout />
     </PrivateRoute>
   ),
   errorElement: <NotFoundPage />,
   children: [
     {
       path: 'dashboard',
-      element: <div>Dasshboard</div>,
+      element: <div>Dashboard</div>,
     },
     {
       path: 'register/product/:idProduct?',

@@ -104,6 +104,7 @@ export default function ListingProducts() {
 
       setListProduct(products);
     } else {
+      setListProduct([]);
       toast({ tipo: 'error', mensagem: response.data });
     }
 

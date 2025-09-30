@@ -57,3 +57,13 @@ export const deleteRequest = async (url: string, data?: any) => {
     return handleError(error);
   }
 };
+export const patchRequest = async (url: string, obj: any) => {
+  const axios = await instance();
+
+  try {
+    const response = await axios.patch(url, obj);
+    return { success: true, data: response.data };
+  } catch (error: any) {
+    return handleError(error);
+  }
+};
