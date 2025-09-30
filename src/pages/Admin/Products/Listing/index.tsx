@@ -216,7 +216,7 @@ export default function ListingProducts() {
               register={register}
               errors={errors}
               placeholder="Filtrar por preço..."
-              step="0.01"
+              step={0.01}
             />
           </form>
         </Box>

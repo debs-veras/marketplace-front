@@ -203,12 +203,12 @@ export default function ProductStore() {
                 />
                 <InputText
                   name="price"
-                  label="Preço Máximo"
+                  label="Preço"
                   type="number"
                   register={register}
                   errors={errors}
                   placeholder="Filtrar por preço..."
-                  step="0.01"
+                  step={0.01}
                 />
               </form>
 

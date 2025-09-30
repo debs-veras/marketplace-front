@@ -64,7 +64,7 @@ export default function RegisterProducts() {
           ? 'Produto atualizado com sucesso!'
           : 'Produto cadastrado com sucesso!',
       });
-      navigate(`/listing/product`);
+      navigate(`/admin/listing/product`);
     } else {
       toastLoading({ mensagem: response.data, tipo: 'error' });
     }
@@ -101,9 +101,9 @@ export default function RegisterProducts() {
               register={register}
               errors={errors}
               required
+              step={0.01}
               validation={{
                 required: 'Preço é obrigatório',
-                min: { value: 1, message: 'Preço deve ser maior que 0' },
               }}
             />
           </div>

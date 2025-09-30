@@ -25,6 +25,7 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   validation?: Parameters<UseFormRegister<any>>[1];
   validateStrength?: boolean;
   watch?: UseFormWatch<any>;
+  step?: number;
 };
 
 export function InputCpf({
@@ -121,6 +122,7 @@ export function InputText(props: InputProps) {
           disabled={propsInput.disabled}
           name={propsInput.name}
           type={propsInput.type}
+          step={props.step}
           placeholder={propsInput.placeholder}
           {...(register && register(propsInput.name, validation))}
           value={
