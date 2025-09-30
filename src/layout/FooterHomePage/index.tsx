@@ -1,67 +1,110 @@
+import LogoCompleta from '../../assets/logo_completa.png';
+
 export default function FooterHomePage() {
   return (
-    <footer id="contato" className="footer bg-gray-900 text-gray-300 p-10">
-      <div className="max-w-7xl mx-auto w-full">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center mb-4">
-              <i className="fas fa-bolt text-blue-400 text-2xl mr-2"></i>
-              <span className="text-xl font-bold text-white">Cartify</span>
+    <footer id="contato" className="bg-gray-900 text-gray-300">
+      <div className="max-w-7xl mx-auto px-4 py-12 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+          <div className="lg:col-span-1">
+            <div className="flex items-center mb-6">
+              <img
+                src={LogoCompleta}
+                alt="Cartify"
+                className="h-15 w-auto mr-3"
+              />
             </div>
-            <p className="mb-4">
+            <p className="text-gray-400 mb-6 leading-relaxed">
               Loja especializada em eletrônicos com os melhores preços e
-              qualidade do mercado.
+              qualidade do mercado. Entrega para todo o Brasil.
             </p>
-            <div className="flex gap-4">
-              <a className="btn btn-circle btn-outline border-gray-600 text-gray-300 hover:border-blue-400 hover:text-blue-400">
-                <i className="fab fa-facebook-f"></i>
-              </a>
-              <a className="btn btn-circle btn-outline border-gray-600 text-gray-300 hover:border-blue-400 hover:text-blue-400">
-                <i className="fab fa-instagram"></i>
-              </a>
-              <a className="btn btn-circle btn-outline border-gray-600 text-gray-300 hover:border-blue-400 hover:text-blue-400">
-                <i className="fab fa-twitter"></i>
-              </a>
-            </div>
           </div>
-          <div>
-            <span className="footer-title text-white">Produtos</span>
-            <a className="link link-hover hover:text-white">Smartphones</a>
-            <a className="link link-hover hover:text-white">Notebooks</a>
-            <a className="link link-hover hover:text-white">TVs</a>
-            <a className="link link-hover hover:text-white">Áudio</a>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Produtos</h3>
+            {[
+              'Smartphones',
+              'Notebooks',
+              'Tablets',
+              'TVs & Áudio',
+              'Acessórios',
+              'Gaming',
+            ].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="block text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-2 transform"
+              >
+                {item}
+              </a>
+            ))}
           </div>
-          <div>
-            <span className="footer-title text-white">Empresa</span>
-            <a className="link link-hover hover:text-white">Sobre nós</a>
-            <a className="link link-hover hover:text-white">Contato</a>
-            <a className="link link-hover hover:text-white">Trabalhe conosco</a>
-            <a className="link link-hover hover:text-white">Blog</a>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Empresa</h3>
+            {[
+              'Sobre nós',
+              'Nossa história',
+              'Trabalhe conosco',
+              'Blog',
+              'Contato',
+              'LGPD',
+            ].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="block text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-2 transform"
+              >
+                {item}
+              </a>
+            ))}
           </div>
-          <div>
-            <span className="footer-title text-white">Legal</span>
-            <a className="link link-hover hover:text-white">Termos de uso</a>
-            <a className="link link-hover hover:text-white">
-              Política de privacidade
-            </a>
-            <a className="link link-hover hover:text-white">
-              Política de cookies
-            </a>
-            <a className="link link-hover hover:text-white">Garantia</a>
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white mb-4">Suporte</h3>
+            {[
+              'Central de ajuda',
+              'Política de trocas',
+              'Garantia',
+              'Formas de pagamento',
+              'Entregas',
+              'Rastrear pedido',
+            ].map((item) => (
+              <a
+                key={item}
+                href="#"
+                className="block text-gray-400 hover:text-white transition-colors duration-300 hover:translate-x-2 transform"
+              >
+                {item}
+              </a>
+            ))}
           </div>
         </div>
 
-        <div className="divider my-8 border-gray-700"></div>
+        <div className="border-t border-gray-800 mt-12 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+            <div className="text-center md:text-left">
+              <p className="text-gray-400 text-sm">
+                © {new Date().getFullYear()} Cartify. Todos os direitos
+                reservados.
+                <span className="block text-xs text-gray-500 mt-1">
+                  CNPJ: 12.345.678/0001-99
+                </span>
+              </p>
+            </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center">
-          <p>
-            Copyright © {new Date().getFullYear()} Cartify - Todos os direitos
-            reservados
-          </p>
-          <div className="flex gap-6 mt-4 md:mt-0">
-            <a className="link link-hover hover:text-white">Termos</a>
-            <a className="link link-hover hover:text-white">Privacidade</a>
-            <a className="link link-hover hover:text-white">Cookies</a>
+            <div className="flex flex-wrap justify-center gap-6">
+              {['Termos de uso', 'Privacidade', 'Cookies', 'Defensoria'].map(
+                (item) => (
+                  <a
+                    key={item}
+                    href="#"
+                    className="text-sm text-gray-400 hover:text-white transition-colors duration-300 whitespace-nowrap"
+                  >
+                    {item}
+                  </a>
+                )
+              )}
+            </div>
           </div>
         </div>
       </div>

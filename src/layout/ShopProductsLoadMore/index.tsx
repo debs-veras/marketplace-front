@@ -28,10 +28,7 @@ export default function ProductStore() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
   const toast = useToastLoading();
-  const registerForPage = 4;
-  const [sortField, setSortField] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-
+  const registerForPage = 8;
   const { user } = useAuth();
 
   const {
@@ -83,43 +80,6 @@ export default function ProductStore() {
     }
     setLoading(false);
     setLoadingMore(false);
-  };
-
-  const sortProducts = (list: ProductList[]) => {
-    if (!sortField) return list;
-
-    return [...list].sort((a, b) => {
-      let valA: any;
-      let valB: any;
-
-      if (sortField === 'name') {
-        valA = a.name.toLowerCase();
-        valB = b.name.toLowerCase();
-      } else if (sortField === 'price') {
-        valA = a.price;
-        valB = b.price;
-      } else {
-        return 0;
-      }
-
-      if (valA < valB) return sortOrder === 'asc' ? -1 : 1;
-      if (valA > valB) return sortOrder === 'asc' ? 1 : -1;
-      return 0;
-    });
-  };
-
-  const handleSort = (value: string) => {
-    if (!value) {
-      setSortField(null);
-      setSortOrder('asc');
-      setProducts((prev) => [...prev]);
-      return;
-    }
-
-    const [field, order] = value.split(':');
-    setSortField(field);
-    setSortOrder(order as 'asc' | 'desc');
-    setProducts((prev) => sortProducts(prev));
   };
 
   const handleQuantityChange = (productId: string, change: number) => {
@@ -211,7 +171,7 @@ export default function ProductStore() {
 
   return (
     <Page loading={loading}>
-      <div className="flex flex-col lg:flex-row gap-6 mx-5 sm:mx-20 mt-15">
+      <div className="flex flex-col lg:flex-row gap-6 mx-2 sm:mx-20 py-15">
         {/* Sidebar - Filtros */}
         <div className="w-full lg:w-1/4">
           <Box>
@@ -221,24 +181,6 @@ export default function ProductStore() {
                 <h2 className="text-lg font-semibold text-gray-700">
                   Filtros e Ordenação
                 </h2>
-              </div>
-
-              {/* Ordenação */}
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Ordenar por
-                </label>
-                <select
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onChange={(e) => handleSort(e.target.value)}
-                  value={sortField || ''}
-                >
-                  <option value="">Selecionar...</option>
-                  <option value="name">Nome (A-Z)</option>
-                  <option value="name:desc">Nome (Z-A)</option>
-                  <option value="price">Preço (Menor para Maior)</option>
-                  <option value="price:desc">Preço (Maior para Menor)</option>
-                </select>
               </div>
 
               {/* Filtros */}

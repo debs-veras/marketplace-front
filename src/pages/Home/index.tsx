@@ -9,9 +9,7 @@ export default function HomePage() {
     <>
       <div className="min-h-screen bg-gradient-to-br from-slate-200 to-blue-50 font-sans">
         {/* Header */}
-        <HeaderHomePage />
-    
-
+        <HeaderHomePage />  
         <ShopProductsLoadMore />
       </div>
       <FooterHomePage />
